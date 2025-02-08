@@ -1,0 +1,29 @@
+{
+  "name": "infokes-backend",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "1.2.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/pg": "^8.11.11",
+    "dotenv": "^16.4.7",
+    "drizzle-kit": "^0.30.4",
+    "drizzle-orm": "^0.39.2",
+    "elysia": "^1.2.12",
+    "pg": "^8.13.1",
+    "pg-connection-string": "^2.7.0",
+    "postgres": "^3.4.5"
+  },
+  "scripts": {
+    "generate:dev": "NODE_ENV=development drizzle-kit generate --config=drizzle-dev.config.ts",
+    "migrate:dev": "NODE_ENV=development bun run src/db/migrate-dev.ts",
+    "seed:dev": "NODE_ENV=development bun run src/db/seeder.ts",
+    "generate:test": "NODE_ENV=test drizzle-kit generate --config=drizzle-test.config.ts",
+    "migrate:test": "NODE_ENV=test bun run src/db/migrate-test.ts",
+    "seed:test": "NODE_ENV=test bun run src/db/seeder.ts"
+  }
+}
