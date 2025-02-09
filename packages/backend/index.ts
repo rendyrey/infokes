@@ -11,6 +11,8 @@ const app = new Elysia()
   .use(cors())
   .listen(3000);
 
+
+
 console.log("Backend server running at http://localhost:3000");
 
 // createDbConnection();

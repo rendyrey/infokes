@@ -30,7 +30,6 @@ export const useDirectoryStore = defineStore('directory', {
       this.loading = true
       try {
         const response = await axios.get('http://localhost:3000/api/v1/directories')
-        console.log(response.data)
         this.directories = response.data.data;
       } catch (error) {
         this.error = 'Failed to fetch directories'

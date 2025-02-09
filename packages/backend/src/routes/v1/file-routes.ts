@@ -3,9 +3,9 @@ import File from "../../models/file-model";
 
 export const fileRoutes = new Elysia().group("/api/v1", (app) =>
   app
-    .get("/files", async () => {
+    .get("/files/:directory_id", async ({params}) => {
       try {
-        const files = await File.getAll();
+        const files = await File.getByDirectoryId(Number(params.directory_id));
         return files;
       } catch (error) {
         return new Response(

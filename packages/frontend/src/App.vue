@@ -11,9 +11,17 @@
       <template v-if="selectedDirectory">
         <h2>Contents of {{ selectedDirectory.name }}</h2>
         <div class="directory-contents">
+          <!-- Directories -->
           <div v-for="dir in selectedDirectoryContents" :key="dir.id" class="directory-item">
-            <span class="folder-icon">📁</span>
+            <span class="folder-icon"><font-awesome-icon icon="fa-solid fa-folder" /></span>
             {{ dir.name }}
+          </div>
+          <!-- Files -->
+          <div v-if="fileStore.loading" class="loading">Loading files...</div>
+          <div v-else-if="fileStore.error" class="error">{{ fileStore.error }}</div>
+          <div v-else v-for="file in directoryFilesContents" :key="file.id" class="file-item">
+            <span class="file-icon"><font-awesome-icon icon="fa-solid fa-file" /></span>
+            {{ file.name }}.{{ file.file_type }}
           </div>
         </div>
       </template>
@@ -25,21 +33,36 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch, ref } from 'vue';
 import { useDirectoryStore } from '@/stores/directory';
+import { useFileStore } from '@/stores/file';
 import TreeNode from '@/components/TreeNode.vue';
 
 const store = useDirectoryStore();
+const fileStore = useFileStore();
 
 const loading = computed(() => store.loading);
 const error = computed(() => store.error);
-const rootDirectories = computed(() => store.rootDirectories);
+const rootDirectories = computed(() => {
+  return store.rootDirectories;
+});
 const selectedDirectory = computed(() => store.selectedDirectory);
 const selectedDirectoryContents = computed(() =>
   selectedDirectory.value
     ? store.getChildDirectories(selectedDirectory.value.id)
     : []
 );
+
+const directoryFilesContents = computed(() => {
+  return fileStore.files;
+});
+
+// Watch for changes in selected directory
+watch(selectedDirectory, async (newDirectory) => {
+  if (newDirectory) {
+    await fileStore.fetchDirectoryFiles(newDirectory.id);
+  }
+});
 
 onMounted(async () => {
   await store.fetchDirectories();
@@ -50,18 +73,19 @@ onMounted(async () => {
 .file-explorer {
   display: flex;
   height: 100vh;
+  width: 100vw;
   border: 1px solid #ccc;
 }
 
 .left-panel {
-  width: 300px;
+  flex: 3;
   border-right: 1px solid #ccc;
   overflow: auto;
   padding: 16px;
 }
 
 .right-panel {
-  flex: 1;
+  flex: 7;
   padding: 16px;
   overflow: auto;
 }
@@ -81,18 +105,28 @@ onMounted(async () => {
   margin-top: 16px;
 }
 
-.directory-item {
+.directory-item,
+.file-item {
   display: flex;
   align-items: center;
   padding: 8px;
   cursor: pointer;
+  margin-bottom: 4px;
+  border-radius: 4px;
 }
 
-.directory-item:hover {
+.directory-item:hover,
+.file-item:hover {
   background-color: #f0f0f0;
 }
 
-.folder-icon {
+.folder-icon,
+.file-icon {
   margin-right: 8px;
+  width: 20px;
+}
+
+.file-icon {
+  color: #666;
 }
 </style>

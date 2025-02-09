@@ -2,10 +2,10 @@
 <template>
     <div class="tree-node">
         <div class="node-content" :class="{ 'selected': isSelected }" @click="selectDirectory">
-            <span class="expand-icon" v-if="hasChildren" @click.stop="toggleExpand">
+            <span class="expand-icon" v-if="hasChildren" @click="toggleExpand">
                 {{ isExpanded ? '▼' : '▶' }}
             </span>
-            <span class="folder-icon">Directory</span>
+            <span class="folder-icon"><font-awesome-icon icon="fa-solid fa-folder" /></span>
             {{ directory.name }}
         </div>
         <div v-if="isExpanded && hasChildren" class="children">

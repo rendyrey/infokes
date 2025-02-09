@@ -13,6 +13,16 @@ const File = {
     }
   },
 
+  async getByDirectoryId(directoryId: number) {
+    try {
+      const filesInDirectory = await db.select().from(files).where(eq(files.directory_id, directoryId));
+      return filesInDirectory;
+    } catch (error) {
+      console.error("Database error:", error);
+      throw error;
+    }
+  },
+
   async getOne(id: number) {
     const directory = await db.select().from(files).where(eq(files.id, id));
     return directory[0];
