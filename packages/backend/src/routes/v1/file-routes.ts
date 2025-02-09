@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
-import File from "../../models/file-model";
+import File, { type FileType } from "../../models/file-model";
+import { successResponse, errorResponse } from "../../helpers/response";
 
 export const fileRoutes = new Elysia().group("/api/v1", (app) =>
   app
@@ -8,33 +9,21 @@ export const fileRoutes = new Elysia().group("/api/v1", (app) =>
         const files = await File.getByDirectoryId(Number(params.directory_id));
         return files;
       } catch (error) {
-        return new Response(
-          JSON.stringify({
-            error: "Failed to fetch files",
-            details: error instanceof Error ? error.message : String(error),
-          }),
-          {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        return errorResponse("Failed to fetch files", 500, error);
       }
     })
-    .post("/files", async ({ body }) => {
+    .post("/files", async ({ body }: { body: FileType }) => {
       try {
+        const existingFile = await File.getOneByNameAndDirectoryId(body.name, body.directory_id);
+
+        if (existingFile) {
+          return errorResponse("File already exists", 400);
+        }
+
         const newFile = await File.create(body);
-        return newFile;
+        return successResponse(newFile, "File created successfully", 201);
       } catch (error) {
-        return new Response(
-          JSON.stringify({
-            error: "Failed to create file",
-            details: error instanceof Error ? error.message : String(error),
-          }),
-          {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        return errorResponse("Failed to create file", 500, error);
       }
     })
 );

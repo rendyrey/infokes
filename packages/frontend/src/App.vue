@@ -20,7 +20,9 @@
           <div v-if="fileStore.loading" class="loading">Loading files...</div>
           <div v-else-if="fileStore.error" class="error">{{ fileStore.error }}</div>
           <div v-else v-for="file in directoryFilesContents" :key="file.id" class="file-item">
-            <span class="file-icon"><font-awesome-icon icon="fa-solid fa-file" /></span>
+            <span class="file-icon">
+              <font-awesome-icon :icon="getIconType(file.file_type)" />
+            </span>
             {{ file.name }}.{{ file.file_type }}
           </div>
         </div>
@@ -43,6 +45,24 @@ const fileStore = useFileStore();
 
 const loading = computed(() => store.loading);
 const error = computed(() => store.error);
+
+const getIconType = (fileType: string): string => {
+  switch (fileType) {
+    case 'txt':
+      return 'fa-solid fa-file-text';
+    case 'doc':
+    case 'docx':
+      return 'fa-solid fa-file-word';
+    case 'jpg':
+    case 'png':
+    case 'jpeg':
+    case 'bmp':
+      return 'fa-solid fa-file-image';
+    default:
+      return `fa-solid fa-file-${fileType}`;
+  }
+}
+
 const rootDirectories = computed(() => {
   return store.rootDirectories;
 });

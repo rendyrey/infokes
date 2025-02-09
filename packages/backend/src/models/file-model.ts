@@ -1,6 +1,15 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import db from "../db";
 import { files } from "../db/schema";
+
+export interface FileType {
+  id: number;
+  directory_id: number;
+  name: string;
+  file_type: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const File = {
   async getAll() {
@@ -26,6 +35,14 @@ const File = {
   async getOne(id: number) {
     const directory = await db.select().from(files).where(eq(files.id, id));
     return directory[0];
+  },
+
+  async getOneByNameAndDirectoryId(name: string, directoryId: number) {
+    const file = await db
+      .select()
+      .from(files)
+      .where(and(eq(files.name, name), eq(files.directory_id, directoryId)));
+    return file[0];
   },
 
   async create(data: any) {
