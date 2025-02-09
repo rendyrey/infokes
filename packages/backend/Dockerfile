@@ -1,5 +1,5 @@
 # Use the official Bun image as the base image for the web server
-FROM oven/bun:1.2.2 as bun
+FROM oven/bun:1.2.2 AS bun
 
 # Set the working directory
 WORKDIR /app

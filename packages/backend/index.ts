@@ -3,6 +3,7 @@ import { directoryRoutes, fileRoutes } from "./src/routes/v1";
 // import { createDbConnection } from "./src/db";
 
 const app = new Elysia()
+  .get("/health", () => "OK")
   .use(directoryRoutes)
   .use(fileRoutes)
   .listen(3000);
