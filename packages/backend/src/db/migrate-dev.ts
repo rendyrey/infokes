@@ -3,12 +3,12 @@ import db from './index';
 
 // This will run migrations
 async function main() {
-  console.log('Running migrations...');
+  console.log('Running migrations for development database...');
   await migrate(db, { migrationsFolder: './src/db/migrations' });
-  console.log('Migrations completed!');
+  console.log('Migrations for dev database completed!');
 }
 
 main().catch((err) => {
-  console.error('Migration failed!', err);
+  console.error('Migration development failed!', err);
   process.exit(1);
 });

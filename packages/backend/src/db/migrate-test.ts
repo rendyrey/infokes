@@ -3,9 +3,9 @@ import db from './index';
 
 // This will run migrations
 async function main() {
-  console.log('Running migrations...');
+  console.log('Running migrations for test database...');
   await migrate(db, { migrationsFolder: './src/db/tests/migrations' });
-  console.log('Migrations completed!');
+  console.log('Migrations for test database completed!');
 }
 
 main().catch((err) => {

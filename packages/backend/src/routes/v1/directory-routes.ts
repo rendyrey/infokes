@@ -9,16 +9,7 @@ export const directoryRoutes = new Elysia().group("/api/v1", (app) =>
         const directories = await Directory.getAll();
         return successResponse(directories, "Directories fetched successfully", 200);
       } catch (error) {
-        return new Response(
-          JSON.stringify({
-            error: "Failed to fetch directories",
-            details: error instanceof Error ? error.message : String(error),
-          }),
-          {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        return errorResponse("Failed to fetch directories", 500, error);
       }
     })
     .post("/directories", async ({ body }) => {
