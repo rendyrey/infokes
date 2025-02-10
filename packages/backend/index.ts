@@ -8,7 +8,9 @@ const app = new Elysia()
   .get("/health", () => "OK")
   .use(directoryRoutes)
   .use(fileRoutes)
-  .use(cors())
+  .use(cors({
+    origin: 'http://localhost:8080'
+  }))
   .listen(3000);
 
 
