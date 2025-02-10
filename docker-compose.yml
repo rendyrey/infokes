@@ -18,18 +18,18 @@ services:
     networks:
       - infokes_network
   
-  # infokes_frontend:
-  #   build: 
-  #     context: ./packages/frontend
-  #     dockerfile: Dockerfile
-  #   container_name: infokes_frontend
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - ./packages/frontend:/app
-  #     - /app/node_modules
-  #   networks:
-  #     - infokes_network
+  infokes_frontend:
+    build: 
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+    container_name: infokes_frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./packages/frontend:/app
+      - /app/node_modules
+    networks:
+      - infokes_network
 
   db:
     platform: linux/x86_64
