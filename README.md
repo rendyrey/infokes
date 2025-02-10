@@ -6,12 +6,21 @@ The application allows users to view the contents of directories and subdirector
 ## Prerequisites
 - Docker, since all services are dockerized in this repo for compatibility and simplicity in running this app
 
+## What's in use
+- Bun
+- Elysia
+- Vue
+- PostgreSQL
+- Typescript
+- Drizzle ORM
+- Zod (Request Validation)
+
 ## Getting Started
 
 1. Clone the repository: `git clone https://github.com/rendyrey/infokes.git`
-2. Run docker-compose: `docker-compose up`
+2. Run docker-compose up to run all services: `docker-compose up`
 3. For running the tests, you can run: `docker exec -it infokes_backend bun test`
-4. By default the app url will be `localhost:8080`
+4. By default, the app url will be `localhost:8080`
 5. Backend endpoints will be `localhost:3000`
 6. Enjoy
 
