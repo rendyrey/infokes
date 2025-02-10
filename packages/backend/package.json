@@ -17,7 +17,8 @@
     "elysia": "^1.2.12",
     "pg": "^8.13.1",
     "pg-connection-string": "^2.7.0",
-    "postgres": "^3.4.5"
+    "postgres": "^3.4.5",
+    "zod": "^3.24.1"
   },
   "scripts": {
     "generate:dev": "NODE_ENV=development drizzle-kit generate --config=drizzle-dev.config.ts",
