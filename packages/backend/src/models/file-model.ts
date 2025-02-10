@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import db from "../db";
 import { files } from "../db/schema";
 
@@ -11,6 +11,8 @@ export interface FileType {
   updatedAt: string;
 }
 
+const fileTypeEnum: readonly [string, ...string[]] = ["pdf", "docx", "txt", "jpg"];
+
 const File = {
   async getAll() {
     try {
@@ -22,9 +24,9 @@ const File = {
     }
   },
 
-  async getByDirectoryId(directoryId: number) {
+  async getByDirectoryId(directory_id: number) {
     try {
-      const filesInDirectory = await db.select().from(files).where(eq(files.directory_id, directoryId));
+      const filesInDirectory = await db.select().from(files).where(eq(files.directory_id, directory_id));
       return filesInDirectory;
     } catch (error) {
       console.error("Database error:", error);
@@ -37,11 +39,11 @@ const File = {
     return directory[0];
   },
 
-  async getOneByNameAndDirectoryId(name: string, directoryId: number) {
+  async getOneByNameAndDirectoryId(name: string, directory_id: number | null) {
     const file = await db
       .select()
       .from(files)
-      .where(and(eq(files.name, name), eq(files.directory_id, directoryId)));
+      .where(and(eq(files.name, name), directory_id !== null ? eq(files.directory_id, directory_id) : isNull(files.directory_id)));
     return file[0];
   },
 
@@ -62,3 +64,4 @@ const File = {
 };
 
 export default File;
+export { fileTypeEnum };

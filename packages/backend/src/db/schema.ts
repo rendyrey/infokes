@@ -1,6 +1,8 @@
 import { type AnyPgColumn, pgTable } from "drizzle-orm/pg-core";
 import * as t from "drizzle-orm/pg-core";
 
+const fileTypeEnum: readonly [string, ...string[]] = ["pdf", "docx", "txt", "jpg"];
+
 export const directories = pgTable("directories", {
   id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
   parent_id: t.integer("parent_id").references((): AnyPgColumn => directories.id, { onDelete: "cascade" }),
@@ -12,7 +14,7 @@ export const directories = pgTable("directories", {
   t.unique("directories_name_parent_id_unique_idx").on(pgTable.name, pgTable.parent_id),
 ]);
 
-export const fileType = t.pgEnum("file_type", ["pdf", "docx", "txt", "jpg"]);
+export const fileType = t.pgEnum("file_type", fileTypeEnum);
 
 export const files = pgTable("files", {
   id: t.integer("id").primaryKey().generatedAlwaysAsIdentity(),
